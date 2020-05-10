@@ -1,9 +1,21 @@
-const express =require("express")
-const app = express()
+require('dotenv').config();
+const express = require('express')
+const mongoose=require('mongoose')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const meals = require('./routes/meals')
+const orders = require('./routes/orders')
 
-app.get("*",(req,res) =>{
-    console.log("Hola mundo , mi primera aplicacion serverless");
-    res.send({message:"Chanchito feliz"})
-})
+const app = express()
+app.use(bodyParser.json())
+app.use(cors())
+
+mongoose.connect(process.env.MONGODB_URI,{useNewUrlParser:true, useUnifiedTopology:true })
+
+
+
+
+app.use('/api/meals',meals)
+app.use('/api/orders',orders)
 
 module.exports = app
